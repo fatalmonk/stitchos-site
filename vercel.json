@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "buildCommand": "npm run build:client",
+  "outputDirectory": "dist/public",
+  "framework": "vite",
+  "env": {
+    "NODE_ENV": "production"
+  }
+}
