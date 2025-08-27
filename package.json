@@ -1,5 +1,5 @@
 {
-  "name": "stitchos-site",
+  "name": "stitchos-site-client",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -8,11 +8,12 @@
     "build:client": "vite build",
     "preview:client": "npx serve dist"
   },
-  "dependencies": {},
+  "dependencies": {
+  },
   "devDependencies": {
     "vite": "^5.4.0"
   },
   "engines": {
-    "node": "18.x"
+    "node": "22.x"
   }
 }
