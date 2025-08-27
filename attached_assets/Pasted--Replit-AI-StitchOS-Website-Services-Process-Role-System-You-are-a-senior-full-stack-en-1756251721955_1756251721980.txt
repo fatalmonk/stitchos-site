@@ -1,0 +1,417 @@
+# Replit AI — StitchOS Website (Services + Process)
+
+**Role/System**: You are a senior full‑stack engineer. Build a production‑ready, responsive website for **StitchOS — “Weaving Intelligence Into Every Thread.”** Use **Next.js (App Router)** + **TypeScript** + **Tailwind CSS** + **shadcn/ui** + **Framer Motion**. Write clean, accessible, SEO‑friendly, WCAG‑compliant code.
+
+---
+
+## 0) Brand & Content (use throughout)
+
+* **Brand**: StitchOS — Weaving Intelligence Into Every Thread. 
+* **One‑liner**: AI‑driven RFID, QR & IoT tracking for the textile industry.
+* **Tone**: Minimal, premium, confident, Bangladesh‑born.
+* **Colors**: `linear-gradient(90deg, #fdd338 50%, #e11a2b 50%, #e11a2b 66.33%, #000 66.33%, #000 82.66%, #1C6FE3 82.66%, #1C6FE3 100%)`
+* **Hero Background**: Apply the brand gradient as the full‑width hero section background with overlayed subtle fabric SVG.
+* **CTA Banner Background**: Reuse the same gradient for call‑to‑action banners for strong visual impact.
+
+---
+
+## Sample Hero Blurb (updated)
+
+“Transform every line of production into a stream of intelligence. StitchOS unites RFID, QR, and IoT into one AI‑powered platform — delivering real‑time visibility, smarter decisions, and compliance built for global brands.”
+
+---
+
+## Sample Benefits Copy (updated)
+
+* **Smarter production**: AI‑powered analytics surface bottlenecks and opportunities.
+* **Real‑time visibility**: Every bundle, every thread tracked from cut to pack.
+* **Predictive quality**: Catch defects early and reduce rework through intelligent QC.
+* **Global compliance**: EPCIS 2.0 + Digital Product Passports ensure export‑readiness.
+* **Affordable scalability**: Modular SaaS pricing and Sharia‑compliant financing options.
+* **AI‑driven KPIs**: Forecast efficiency %, predict rework rates, and identify downtime risks before they occur.
+
+---
+
+## Sample Process Explainer (updated)
+
+1. **Tag & Encode with Intelligence** — RFID or QR identifiers are applied to bundles, pieces, or cartons, with AI validating data quality at the source.
+2. **Track & Verify in Real Time** — Fixed readers, handhelds, and QR scans stream data continuously. AI detects anomalies, highlights bottlenecks, and predicts delays.
+3. **Analyze & Improve Continuously** — Dashboards merge production, quality, and machine data. AI suggests optimizations, predicts rework hotspots, and supports faster decision‑making.
+
+“Every step isn’t just recorded — it’s interpreted. StitchOS brings intelligence to tagging, tracking, and analysis, so factories don’t just see data — they act on it.”
+
+---
+
+## Additional Sections to Complete Prompt
+
+### Pages to Implement
+
+* **Home**: Hero, benefits, modules teaser, process teaser, mini case snippets, CTA.
+* **Services**: Detail six modules — Trace, Control, Ledger, Pack, Fabric, Measure.
+* **Process**: Timeline of 3 AI‑infused steps, schematic diagram, explainer copy.
+* **Case Studies**: Problem → solution → outcome placeholders (e.g., KTL pilot).
+* **Pricing**: Starter, Pro, Enterprise tiers; note about hardware partners and Sharia‑compliant financing.
+* **Contact**: Form with validation (name, email, company, phone, message, brochure checkbox).
+
+### Components
+
+* **Hero.tsx** — Gradient background, H1 tagline, blurb, CTA buttons.
+* **ModuleCard.tsx** — Icon, title, blurb, hover animation.
+* **ProcessStep.tsx** — Icon + title + AI explanation.
+* **KPIStat.tsx** — Real‑time KPIs (efficiency %, rework %, downtime risk).
+* **Timeline.tsx** — Vertical timeline with animations.
+* **CTA.tsx** — Gradient background call‑to‑action.
+* **BadgeCloud.tsx** — Array of technology/feature badges.
+* **AnimatedSection.tsx** — Wrapper for reveal animations.
+
+### Config & SEO
+
+* Install deps: `tailwindcss postcss autoprefixer framer-motion lucide-react next-sitemap zod react-hook-form`.
+* Use shadcn/ui components for UI primitives.
+* Tailwind config: brand gradient, fonts Inter + Outfit.
+* `seo.ts`: meta tags, OpenGraph, Twitter, JSON‑LD schema.
+* Sitemap + robots from `next-sitemap`.
+
+### Accessibility & Performance
+
+* Semantic headings, alt text, ARIA roles, focus-visible states.
+* Optimize images with `<Image>`.
+* Lighthouse: Performance 90+, Accessibility 95+, SEO 95+.
+
+---
+
+**Output Goal**: Generate a complete codebase with pages, components, and configs as specified. Ensure copy is centralized (e.g., `/content/modules.ts`) and easily editable by non‑developers. Produce a clean, modern UI with gradient accents, smooth motion, and clear CTAs that communicate StitchOS as the intelligent layer for garment production.
+
+---
+
+## 1) Project Scaffold (Next.js 14 + TS + Tailwind + shadcn/ui)
+
+**Create this structure:**
+
+```
+/app
+  /(site)/page.tsx                 # Home
+  /(site)/services/page.tsx        # Services (modules)
+  /(site)/process/page.tsx         # Process (3-step flow)
+  /(site)/case-studies/page.tsx    # Case studies (placeholders)
+  /(site)/pricing/page.tsx         # Pricing tiers
+  /(site)/contact/page.tsx         # Contact (form)
+  /api/contact/route.ts            # POST email webhook (mock)
+  /layout.tsx
+  /globals.css
+/components
+  /ui/* (shadcn-generated components)
+  Hero.tsx
+  ModuleCard.tsx
+  ProcessStep.tsx
+  KPIStat.tsx
+  Timeline.tsx
+  CTA.tsx
+  SiteHeader.tsx
+  SiteFooter.tsx
+  BadgeCloud.tsx
+  AnimatedSection.tsx
+/content
+  modules.ts        # centralized copy for module cards
+  kpis.ts           # KPI labels & descriptions
+/lib
+  analytics.ts
+  seo.ts
+  utils.ts
+/public
+  /logos/*
+  /images/hero/* (placeholders)
+```
+
+### Commands
+
+```
+npx create-next-app@latest stitchos --ts --eslint --app --src-dir=false --import-alias "@/*"
+cd stitchos
+npm i tailwindcss postcss autoprefixer framer-motion lucide-react next-sitemap zod react-hook-form class-variance-authority clsx
+npx tailwindcss init -p
+# shadcn/ui
+npx shadcn@latest init -d
+npx shadcn@latest add button card input textarea badge tabs separator navigation-menu alert dialog toast
+```
+
+---
+
+## 2) Tailwind & Theme
+
+**`tailwind.config.ts`:** enable container + fonts + shadcn preset.
+
+```ts
+import type { Config } from 'tailwindcss'
+const config: Config = {
+  darkMode: ['class'],
+  content: ['./app/**/*.{ts,tsx}','./components/**/*.{ts,tsx}'],
+  theme: {
+    container: { center: true, padding: '1rem', screens: { lg: '1024px', xl: '1280px', '2xl': '1440px' } },
+    extend: {
+      fontFamily: { sans: ['Inter', 'system-ui'], display: ['Outfit','Inter'] },
+      colors: { ink: '#0B1F3A', teal: '#00BFA6', stone: '#F5F7FA' }
+    }
+  },
+  plugins: []
+}
+export default config
+```
+
+**`app/globals.css`: add gradient helpers**
+
+```css
+:root{
+  --grad-brand: linear-gradient(90deg,#fdd338 50%,#e11a2b 50%,#e11a2b 66.33%,#000 66.33%,#000 82.66%,#1C6FE3 82.66%,#1C6FE3 100%);
+}
+.bg-brand-gradient{ background: var(--grad-brand); }
+.text-gradient{ background: var(--grad-brand); -webkit-background-clip: text; background-clip: text; color: transparent; }
+```
+
+---
+
+## 3) Global Layout
+
+* Sticky `<SiteHeader>` with logo text **StitchOS** and nav: Home, Services, Process, Case Studies, Pricing, Contact, **Request a Demo**.
+* Hero section uses `.bg-brand-gradient` overlay + subtle fabric SVG (opacity 0.08).
+* CTA banners reuse gradient.
+* Respect `prefers-reduced-motion`; use `AnimatedSection` for fade/slide-in.
+
+**`app/layout.tsx` (skeleton):**
+
+```tsx
+export default function RootLayout({children}:{children:React.ReactNode}){
+  return (
+    <html lang="en"><body className="min-h-dvh bg-white text-slate-900">
+      <SiteHeader/>
+      <main className="container py-10">{children}</main>
+      <SiteFooter/>
+    </body></html>
+  )
+}
+```
+
+---
+
+## 4) Pages & Acceptance Criteria
+
+### Home
+
+* Hero: H1 **“Weaving Intelligence Into Every Thread.”**
+* Sub: AI-driven RFID/QR/IoT line.
+* KPIs grid (4 stats), Modules teaser, Process teaser, Case snippets, CTA.
+* **Done when:** All sections render, links route, Lighthouse ≥90 perf/SEO, no console errors.
+
+### Services
+
+* Six Module cards from `/content/modules.ts` (Trace, Control, Ledger, Pack, Fabric, Measure).
+* Each card: icon, 3 bullets, small tooltip “How it works”.
+
+### Process
+
+* 3-step timeline with icons + schematic diagram block (monospace) and “Why Hybrid RFID+QR?” explainer.
+
+### Case Studies
+
+* 3 placeholders (KTL pilot, Denim Line Rollout, Carton EPC Verification) with problem→solution→outcome.
+
+### Pricing
+
+* Starter (QR-first), Pro (Hybrid RFID), Enterprise (Custom). Note hardware via partners + Sharia-compliant financing.
+
+### Contact
+
+* Form (name, email, company, phone, message, brochure checkbox). Validate with `zod` + `react-hook-form`. POST to `/api/contact`.
+
+---
+
+## 5) Components (props-focused)
+
+* **Hero.tsx**: `{ title, subtitle, primaryCta, secondaryCta }`
+* **ModuleCard.tsx**: `{ icon, title, blurb, bullets }`
+* **ProcessStep.tsx**: `{ step, title, copy }`
+* **KPIStat.tsx**: `{ value, label, hint? }`
+* **Timeline.tsx**: `{ items: {title:string;desc:string;}[] }`
+* **CTA.tsx**: `{ title, body, cta }` with `.bg-brand-gradient`
+* **AnimatedSection.tsx**: wraps children with framer-motion reveal
+
+---
+
+## 6) Content Source
+
+**`/content/modules.ts`** (editable):
+
+```ts
+export const modules = [
+  { slug:'trace',   title:'Trace',   blurb:'Track garments & bundles in real time using RFID and QR.',
+    bullets:['Bundle + piece IDs (SGTIN/QR)','Hands‑free line input portal','Offline‑tolerant edge capture'] },
+  { slug:'control', title:'Control', blurb:'QC posts aligned to Levi’s 7/0 & Adidas TLS 2.0 standards.',
+    bullets:['Inline & endline checks','Defects, rework routing','Brand‑ready templates'] },
+  { slug:'ledger',  title:'Ledger',  blurb:'EPCIS 2.0 event backbone; secure, auditable, exportable.',
+    bullets:['Object/Aggregation/Transaction events','Idempotent ingest','Tenant‑safe (RLS)'] },
+  { slug:'pack',    title:'Pack',    blurb:'Carton verification, EPC/UPC checks, ASN links.',
+    bullets:['Duplicate/mismatch guard','ASN/PO association','Handheld → tunnel upgrade path'] },
+  { slug:'fabric',  title:'Fabric',  blurb:'Roll tracking to reduce cutting waste and improve yield.',
+    bullets:['Roll → cutting traceability','Utilization dashboard','QR + optional RFID'] },
+  { slug:'measure', title:'Measure', blurb:'Digital measurement (Bluetooth tape) to cut manual errors.',
+    bullets:['Auto capture','Variance rules','QA trend reports'] }
+]
+```
+
+**`/content/kpis.ts`** (AI‑driven KPIs shown on Home):
+
+```ts
+export const kpis = [
+  { value: '↑12–18%', label: 'Line efficiency lift', hint: 'vs. baseline after 6–8 weeks' },
+  { value: '↓25–40%', label: 'Rework & defects', hint: 'with predictive QC alerts' },
+  { value: '99.7%', label: 'Carton accuracy', hint: 'EPC/UPC verification before seal' },
+  { value: 'T+0', label: 'Realtime WIP', hint: 'live bundle status across the floor' }
+]
+```
+
+---
+
+## 7) API & Utilities
+
+**`/app/api/contact/route.ts`** (mock):
+
+```ts
+import { NextResponse } from 'next/server'
+export async function POST(req: Request){
+  const data = await req.json()
+  console.log('Contact form:', data)
+  return NextResponse.json({ ok: true })
+}
+```
+
+**`/lib/analytics.ts`**:
+
+```ts
+export function track(event: string, payload?: Record<string,unknown>){
+  if (process.env.NODE_ENV !== 'production') console.log('[analytics]', event, payload)
+}
+```
+
+---
+
+## 8) SEO & Sitemap
+
+**`/lib/seo.ts`**: page metadata helpers; add Organization & Product JSON‑LD on Home.
+**`next-sitemap.config.js`**:
+
+```js
+module.exports = { siteUrl: 'https://stitchos.app', generateRobotsTxt: true }
+```
+
+---
+
+## 9) Accessibility & Performance
+
+* Semantic headings, labels/ARIA, focus states (`focus-visible:outline`).
+* Next `<Image>` with `sizes` and lazy loading.
+* Prefer CSS transforms for motion; reduce layout shift.
+* **Targets:** Lighthouse: Perf ≥90, A11y ≥95, SEO ≥95.
+
+---
+
+## 10) QA Checklist (Definition of Done)
+
+* TypeScript passes; no ESLint errors.
+* All pages responsive (mobile → desktop); header sticky and accessible.
+* Forms validate and POST successfully; success state visible.
+* Copy centralized in `/content`; non‑dev can edit text.
+* No console errors; 404/500 pages exist (Next default OK).
+
+---
+
+## 11) Deployment Notes (Replit/Vercel)
+
+* On Replit: import repo, set `NEXT_PUBLIC_SITE_URL`, run build.
+* On Vercel: connect GitHub, set env vars, enable Next.js App Router auto‑detect.
+* Post‑deploy: verify sitemap/robots, test contact form, run Lighthouse.
+
+---
+
+**Output Goal**: Generate the full codebase and show key files (pages, components, Tailwind config). Use clean, modern UI with tasteful motion and clear CTAs. Apply the **brand gradient** to Hero + CTA and provide class helpers for reuse.
+
+---
+
+## 12) Sample Component Code
+
+### `components/Hero.tsx`
+
+```tsx
+'use client'
+import { motion } from 'framer-motion'
+import Link from 'next/link'
+
+interface HeroProps {
+  title: string
+  subtitle: string
+  primaryCta: { label: string; href: string }
+  secondaryCta?: { label: string; href: string }
+}
+
+export default function Hero({ title, subtitle, primaryCta, secondaryCta }: HeroProps) {
+  return (
+    <section className="relative bg-brand-gradient text-white rounded-2xl overflow-hidden py-20 px-6">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="max-w-3xl mx-auto text-center"
+      >
+        <h1 className="text-4xl md:text-6xl font-display font-bold mb-4">{title}</h1>
+        <p className="text-lg md:text-xl mb-8 opacity-90">{subtitle}</p>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Link href={primaryCta.href} className="px-6 py-3 rounded-lg bg-white text-ink font-medium hover:opacity-90 transition">
+            {primaryCta.label}
+          </Link>
+          {secondaryCta && (
+            <Link href={secondaryCta.href} className="px-6 py-3 rounded-lg border border-white text-white hover:bg-white/10 transition">
+              {secondaryCta.label}
+            </Link>
+          )}
+        </div>
+      </motion.div>
+    </section>
+  )
+}
+```
+
+### `components/ModuleCard.tsx`
+
+```tsx
+import { Card, CardHeader, CardContent } from "@/components/ui/card"
+import { LucideIcon } from "lucide-react"
+
+interface ModuleCardProps {
+  icon: LucideIcon
+  title: string
+  blurb: string
+  bullets: string[]
+}
+
+export default function ModuleCard({ icon: Icon, title, blurb, bullets }: ModuleCardProps) {
+  return (
+    <Card className="hover:shadow-lg transition rounded-2xl">
+      <CardHeader className="flex flex-row items-center gap-3">
+        <Icon className="w-6 h-6 text-teal" />
+        <h3 className="font-semibold text-xl">{title}</h3>
+      </CardHeader>
+      <CardContent>
+        <p className="text-slate-600 mb-3">{blurb}</p>
+        <ul className="list-disc list-inside text-sm text-slate-500 space-y-1">
+          {bullets.map((b, i) => (
+            <li key={i}>{b}</li>
+          ))}
+        </ul>
+      </CardContent>
+    </Card>
+  )
+}
+```
+
+---
+
+These snippets demonstrate the **Hero** with gradient + motion and the **ModuleCard** with icon, blurb, and bullets. Customize props via `/content` data arrays.
