@@ -1,6 +1,4 @@
-{
-  "scripts": {
-    "build:client": "vite build",
-    "preview:client": "npx serve dist/public"
-  }
+"scripts": {
+  "build:client": "vite build"
 }
+"engines": { "node": "18.x" }
