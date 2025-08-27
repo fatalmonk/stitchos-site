@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "build:client": "vite build",
+    "preview:client": "npx serve dist/public"
+  }
+}
