@@ -1,4 +1,19 @@
-"scripts": {
-  "build:client": "vite build"
+{
+  "name": "stitchos-site",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build:client": "vite build",
+    "preview:client": "npx serve dist"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "vite": "^5.4.0"
+  },
+  "engines": {
+    "node": "18.x"
+  }
 }
-"engines": { "node": "18.x" }
